@@ -92,19 +92,25 @@ function! s:source.gather_candidates(args, context)
 endfunction
 
 let s:source.action_table.import = {
-            \ 'description' : 'Import Go package'
+            \ 'description' : 'Import Go package',
+            \ 'is_selectable' : 1,
             \ }
 
-function! s:source.action_table.import.func(candidate)
-    execute 'Import' a:candidate.word
+function! s:source.action_table.import.func(candidates)
+    for candidate in a:candidates
+        execute 'Import' candidate.word
+    endfor
 endfunction
 
 let s:source.action_table.drop = {
-            \ 'description' : 'Drop Go package'
+            \ 'description' : 'Drop Go package',
+            \ 'is_selectable' : 1,
             \ }
 
-function! s:source.action_table.drop.func(candidate)
-    execute 'Drop' a:candidate.word
+function! s:source.action_table.drop.func(candidates)
+    for candidate in a:candidates
+        execute 'Drop' candidate.word
+    endfor
 endfunction
 
 let &cpo = s:save_cpo
