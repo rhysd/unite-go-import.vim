@@ -102,7 +102,7 @@ function! s:source.gather_candidates(args, context)
 endfunction
 
 let s:source.action_table.import = {
-            \ 'description' : 'Import Go package',
+            \ 'description' : 'Import Go package(s)',
             \ 'is_selectable' : 1,
             \ }
 
@@ -113,7 +113,7 @@ function! s:source.action_table.import.func(candidates)
 endfunction
 
 let s:source.action_table.drop = {
-            \ 'description' : 'Drop Go package',
+            \ 'description' : 'Drop Go package(s)',
             \ 'is_selectable' : 1,
             \ }
 
