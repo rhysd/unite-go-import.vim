@@ -2,6 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let g:unite_source_go_import_go_command = get(g:, 'unite_source_go_import_go_command', 'go')
+let g:unite_source_go_import_disable_cache = get(g:, 'unite_source_go_import_disable_cache', 0)
 
 let s:source = {
             \   'name' : 'go/import',
@@ -10,12 +11,18 @@ let s:source = {
             \   'action_table' : {},
             \ }
 
+let s:previous_result = []
+
 function! unite#sources#go_import#define()
     if ! exists(':Import')
         echomsg ':Import command is not found.'
         return {}
     endif
     return s:source
+endfunction
+
+function! unite#sources#go_import#reset_cache()
+    let s:previous_result = []
 endfunction
 
 if $GOOS != ''
@@ -85,10 +92,13 @@ function! s:go_packages()
 endfunction
 
 function! s:source.gather_candidates(args, context)
-    " TODO: Cache
-    return map(s:go_packages(), '{
-                \ "word" : v:val
-                \ }')
+    if ! g:unite_source_go_import_disable_cache &&
+                \ (empty(s:previous_result) || a:args == ['!'])
+        let s:previous_result = map(s:go_packages(), '{
+                                        \ "word" : v:val,
+                                        \ }')
+    endif
+    return s:previous_result
 endfunction
 
 let s:source.action_table.import = {
