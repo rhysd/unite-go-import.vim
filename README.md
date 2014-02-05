@@ -9,6 +9,12 @@ This is a [unite.vim](https://github.com/Shougo/unite.vim) source to import pack
 :Unite go/import
 ```
 
+unite-go-import.vim caches the first result on memory.  If you want to refresh the cache and make candidates again, specify `!` argument.
+
+```
+:Unite go/import:!
+```
+
 ## Installation
 
 This plugin depends on [unite.vim](https://github.com/Shougo/unite.vim) and `:Import`/`:Drop` Vim commands.  `:Import`/`:Drop` commands are bundled in Go environment.  See [documentation](http://golang.org/misc/vim/readme.txt).
