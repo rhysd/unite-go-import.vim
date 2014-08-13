@@ -15,7 +15,6 @@ let s:previous_result = []
 
 function! unite#sources#go_import#define()
     if ! exists(':Import')
-        echomsg ':Import command is not found.'
         return {}
     endif
     return s:source
@@ -48,7 +47,7 @@ function! s:go_packages()
     if executable('go')
         let goroot = substitute(system('go env GOROOT'), '\n', '', 'g')
         if v:shell_error
-            echomsg "'go env GOROOT' failed"
+            echohl ErrorMsg | echomsg "'go env GOROOT' failed" | echohl None
             return []
         endif
     else
