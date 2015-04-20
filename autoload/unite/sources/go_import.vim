@@ -14,7 +14,7 @@ let s:source = {
 let s:previous_result = []
 
 function! unite#sources#go_import#define()
-    if s:import_cmd() ==# ''
+    if s:cmd_for('import') ==# ''
         return {}
     endif
     return s:source
@@ -90,32 +90,23 @@ function! s:go_packages()
     return ret
 endfunction
 
-function! s:import_cmd()
-    if !exists('g:unite_source_go_import_import_cmd')
-        if exists(':Import')
-            let g:unite_source_go_import_import_cmd = 'Import'
-        elseif exists(':GoImports')
-            let g:unite_source_go_import_import_cmd = 'GoImport'
-        else
-            return ''
-        endif
+function! s:cmd_for(name)
+    if exists('g:unite_source_go_import_' . a:name . '_cmd')
+        return g:unite_source_go_import_{a:name}_cmd
     endif
 
-    return g:unite_source_go_import_import_cmd
-endfunction
+    let name = a:name =~# '^go' ? a:name[2:] : a:name
+    let camelized = toupper(name[0]) . name[1:]
 
-function! s:drop_cmd()
-    if !exists('g:unite_source_go_import_drop_cmd')
-        if exists(':Drop')
-            let g:unite_source_go_import_drop_cmd = 'Drop'
-        elseif exists(':GoDrop')
-            let g:unite_source_go_import_drop_cmd = 'GoDrop'
-        else
-            return ''
-        endif
+    if exists(':' . camelized)
+        let g:unite_source_go_import_{a:name}_cmd = camelized
+    elseif exists(':Go' . camelized)
+        let g:unite_source_go_import_{a:name}_cmd = 'Go' . camelized
+    else
+        return ''
     endif
 
-    return g:unite_source_go_import_drop_cmd
+    return g:unite_source_go_import_{a:name}_cmd
 endfunction
 
 function! s:source.gather_candidates(args, context)
@@ -134,7 +125,7 @@ let s:source.action_table.import = {
             \ }
 
 function! s:source.action_table.import.func(candidates)
-    let cmd = s:import_cmd()
+    let cmd = s:cmd_for('import')
     if cmd ==# '' | return | endif
 
     for candidate in a:candidates
@@ -148,12 +139,21 @@ let s:source.action_table.drop = {
             \ }
 
 function! s:source.action_table.drop.func(candidates)
-    let cmd = s:drop_cmd()
+    let cmd = s:cmd_for('drop')
     if cmd ==# '' | return | endif
 
     for candidate in a:candidates
         execute cmd candidate.word
     endfor
+endfunction
+
+let s:source.action_table.godoc = {
+            \ 'description' : 'Show documentation for the package',
+            \ 'is_selectable' : 0,
+            \ }
+
+function! s:source.action_table.godoc.func(candidate)
+    execute s:cmd_for('godoc') a:candidate.word
 endfunction
 
 let &cpo = s:save_cpo
