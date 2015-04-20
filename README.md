@@ -34,7 +34,8 @@ NeoBundleLazy 'rhysd/unite-go-import.vim', {
 
 This plugin is distributed under the same license as Go programming language.
 
-    Copyright (c) 2014 rhysd. All rights reserved.
+    Copyright (c) 2014-2015 rhysd.
+    All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are
