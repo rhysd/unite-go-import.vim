@@ -14,7 +14,7 @@ let s:source = {
 let s:previous_result = []
 
 function! unite#sources#go_import#define()
-    if ! exists(':Import')
+    if s:import_cmd() ==# ''
         return {}
     endif
     return s:source
@@ -90,6 +90,34 @@ function! s:go_packages()
     return ret
 endfunction
 
+function! s:import_cmd()
+    if !exists('g:unite_source_go_import_import_cmd')
+        if exists(':Import')
+            let g:unite_source_go_import_import_cmd = 'Import'
+        elseif exists(':GoImports')
+            let g:unite_source_go_import_import_cmd = 'GoImport'
+        else
+            return ''
+        endif
+    endif
+
+    return g:unite_source_go_import_import_cmd
+endfunction
+
+function! s:drop_cmd()
+    if !exists('g:unite_source_go_import_drop_cmd')
+        if exists(':Drop')
+            let g:unite_source_go_import_drop_cmd = 'Drop'
+        elseif exists(':GoDrop')
+            let g:unite_source_go_import_drop_cmd = 'GoDrop'
+        else
+            return ''
+        endif
+    endif
+
+    return g:unite_source_go_import_drop_cmd
+endfunction
+
 function! s:source.gather_candidates(args, context)
     if ! g:unite_source_go_import_disable_cache &&
                 \ (empty(s:previous_result) || a:args == ['!'])
@@ -106,8 +134,11 @@ let s:source.action_table.import = {
             \ }
 
 function! s:source.action_table.import.func(candidates)
+    let cmd = s:import_cmd()
+    if cmd ==# '' | return | endif
+
     for candidate in a:candidates
-        execute 'Import' candidate.word
+        execute cmd candidate.word
     endfor
 endfunction
 
@@ -117,8 +148,11 @@ let s:source.action_table.drop = {
             \ }
 
 function! s:source.action_table.drop.func(candidates)
+    let cmd = s:drop_cmd()
+    if cmd ==# '' | return | endif
+
     for candidate in a:candidates
-        execute 'Drop' candidate.word
+        execute cmd candidate.word
     endfor
 endfunction
 
