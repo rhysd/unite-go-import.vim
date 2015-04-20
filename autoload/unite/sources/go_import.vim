@@ -95,18 +95,23 @@ function! s:cmd_for(name)
         return g:unite_source_go_import_{a:name}_cmd
     endif
 
-    let name = a:name =~# '^go' ? a:name[2:] : a:name
-    let camelized = toupper(name[0]) . name[1:]
+    let camelized = toupper(a:name[0]) . a:name[1:]
 
     if exists(':' . camelized)
         let g:unite_source_go_import_{a:name}_cmd = camelized
-    elseif exists(':Go' . camelized)
-        let g:unite_source_go_import_{a:name}_cmd = 'Go' . camelized
+        return camelized
     else
-        return ''
+        " For vim-go
+        let name = a:name =~# '^go' ? a:name[2:] : a:name
+        let camelized = 'Go' . toupper(name[0]) . name[1:]
+
+        if exists(':' . camelized)
+            let g:unite_source_go_import_{a:name}_cmd = camelized
+            return camelized
+        endif
     endif
 
-    return g:unite_source_go_import_{a:name}_cmd
+    return ''
 endfunction
 
 function! s:source.gather_candidates(args, context)
