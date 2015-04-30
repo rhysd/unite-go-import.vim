@@ -9,6 +9,8 @@ This is a [unite.vim](https://github.com/Shougo/unite.vim) source to import pack
 :Unite go/import
 ```
 
+![screenshot](https://raw.githubusercontent.com/rhysd/screenshots/master/unite-go-import.vim/unite-go-import.gif)
+
 unite-go-import.vim caches the first result on memory.  If you want to refresh the cache and make candidates again, specify `!` argument.
 
 ```
