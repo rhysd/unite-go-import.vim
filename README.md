@@ -15,6 +15,12 @@ unite-go-import.vim caches the first result on memory.  If you want to refresh t
 :Unite go/import:!
 ```
 
+You can see the `godoc` document as preview of the package.  Please enter `p` on the candidate of unite window.  If you want to show the preview automatically, execute `:Unite` command as below.
+
+```
+:Unite go/import -auto-preview
+```
+
 ## Installation
 
 This plugin depends on [unite.vim](https://github.com/Shougo/unite.vim) and `:Import`/`:Drop` Vim commands.  `:Import`/`:Drop` commands are bundled in Go environment.  See [documentation](http://golang.org/misc/vim/readme.txt).
