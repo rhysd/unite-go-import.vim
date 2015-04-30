@@ -161,5 +161,26 @@ function! s:source.action_table.godoc.func(candidate)
     execute s:cmd_for('godoc') a:candidate.word
 endfunction
 
+let s:source.action_table.preview = {
+            \ 'description' : 'Preview the package with godoc',
+            \ 'is_quit' : 0,
+            \ }
+
+function! s:source.action_table.preview.func(candidate)
+    let cmd = s:cmd_for('godoc')
+    let b = bufnr('%')
+
+    execute cmd a:candidate.word
+    setlocal previewwindow
+    let bufnr = bufnr('%')
+
+    let w = bufwinnr(b)
+    execute w . 'wincmd w'
+
+    if !buflisted(bufnr)
+        call unite#add_previewed_buffer_list(bufnr)
+    endif
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
