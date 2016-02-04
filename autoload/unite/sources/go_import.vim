@@ -40,7 +40,6 @@ else
     let s:ARCH = '*'
 endif
 
-
 function! s:go_packages()
     let dirs = []
 
@@ -87,7 +86,7 @@ function! s:go_packages()
                 \)
         endfor
     endfor
-    return ret
+    return filter(ret, 'stridx(v:val, "/internal/") == -1')
 endfunction
 
 function! s:cmd_for(name)
