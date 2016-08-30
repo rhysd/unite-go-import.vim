@@ -139,6 +139,20 @@ function! s:source.action_table.import.func(candidates)
     endfor
 endfunction
 
+let s:source.action_table.import_as = {
+            \ 'description' : 'Import Go package with local name',
+            \ 'is_selectable' : 0,
+            \ }
+
+function! s:source.action_table.import_as.func(candidate) abort
+    let local_name = input('Enter local name: ')
+    if local_name ==# ''
+        echo 'Canceled.'
+        return
+    endif
+    execute s:cmd_for('importAs') local_name a:candidate.word
+endfunction
+
 let s:source.action_table.drop = {
             \ 'description' : 'Drop Go package(s)',
             \ 'is_selectable' : 1,
