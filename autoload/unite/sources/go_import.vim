@@ -150,7 +150,11 @@ function! s:source.action_table.import_as.func(candidate) abort
         echo 'Canceled.'
         return
     endif
-    execute s:cmd_for('importAs') local_name a:candidate.word
+
+    let cmd = s:cmd_for('importAs')
+    if cmd ==# '' | return | endif
+
+    execute cmd local_name a:candidate.word
 endfunction
 
 let s:source.action_table.drop = {
@@ -173,7 +177,9 @@ let s:source.action_table.godoc = {
             \ }
 
 function! s:source.action_table.godoc.func(candidate)
-    execute s:cmd_for('godoc') a:candidate.word
+    let cmd = s:cmd_for('godoc')
+    if cmd ==# '' | return | endif
+    execute cmd a:candidate.word
 endfunction
 
 let s:source.action_table.preview = {
@@ -183,6 +189,7 @@ let s:source.action_table.preview = {
 
 function! s:source.action_table.preview.func(candidate)
     let cmd = s:cmd_for('godoc')
+    if cmd ==# '' | return | endif
     let b = bufnr('%')
 
     execute cmd a:candidate.word
