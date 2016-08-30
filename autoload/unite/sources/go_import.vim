@@ -13,14 +13,14 @@ let s:source = {
 
 let s:previous_result = []
 
-function! unite#sources#go_import#define()
+function! unite#sources#go_import#define() abort
     if s:cmd_for('import') ==# ''
         return {}
     endif
     return s:source
 endfunction
 
-function! unite#sources#go_import#reset_cache()
+function! unite#sources#go_import#reset_cache() abort
     let s:previous_result = []
 endfunction
 
@@ -40,7 +40,7 @@ else
     let s:ARCH = '*'
 endif
 
-function! s:go_packages()
+function! s:go_packages() abort
     let dirs = []
 
     if executable('go')
@@ -91,7 +91,7 @@ function! s:go_packages()
     return filter(ret, 'stridx(v:val, "/internal/") == -1')
 endfunction
 
-function! s:cmd_for(name)
+function! s:cmd_for(name) abort
     if exists('g:unite_source_go_import_' . a:name . '_cmd')
         return g:unite_source_go_import_{a:name}_cmd
     endif
@@ -115,7 +115,7 @@ function! s:cmd_for(name)
     return ''
 endfunction
 
-function! s:source.gather_candidates(args, context)
+function! s:source.gather_candidates(args, context) abort
     if ! g:unite_source_go_import_disable_cache &&
                 \ (empty(s:previous_result) || a:args == ['!'])
         let s:previous_result = map(s:go_packages(), '{
@@ -130,7 +130,7 @@ let s:source.action_table.import = {
             \ 'is_selectable' : 1,
             \ }
 
-function! s:source.action_table.import.func(candidates)
+function! s:source.action_table.import.func(candidates) abort
     let cmd = s:cmd_for('import')
     if cmd ==# '' | return | endif
 
@@ -162,7 +162,7 @@ let s:source.action_table.drop = {
             \ 'is_selectable' : 1,
             \ }
 
-function! s:source.action_table.drop.func(candidates)
+function! s:source.action_table.drop.func(candidates) abort
     let cmd = s:cmd_for('drop')
     if cmd ==# '' | return | endif
 
@@ -176,7 +176,7 @@ let s:source.action_table.godoc = {
             \ 'is_selectable' : 0,
             \ }
 
-function! s:source.action_table.godoc.func(candidate)
+function! s:source.action_table.godoc.func(candidate) abort
     let cmd = s:cmd_for('godoc')
     if cmd ==# '' | return | endif
     execute cmd a:candidate.word
@@ -187,7 +187,7 @@ let s:source.action_table.preview = {
             \ 'is_quit' : 0,
             \ }
 
-function! s:source.action_table.preview.func(candidate)
+function! s:source.action_table.preview.func(candidate) abort
     let cmd = s:cmd_for('godoc')
     if cmd ==# '' | return | endif
     let b = bufnr('%')
