@@ -1,7 +1,7 @@
 A unite.vim source to import Go packages
 ========================================
 
-This is a [unite.vim](https://github.com/Shougo/unite.vim) source to import packages for Go programming language.  You can search and import/drop packages incrementally in unite interface.
+This is a [unite.vim](https://github.com/Shougo/unite.vim) source to import packages for Go programming language.  You can search and import/drop packages incrementally with unite interface.
 
 ## Usage
 
@@ -23,9 +23,11 @@ You can see the `godoc` document as preview of the package.  Please enter `p` on
 :Unite go/import -auto-preview
 ```
 
+There are `import`, `drop`, `godoc` and `import_as` actions for package candidates in unite interface.  `import` is a default action.
+
 ## Installation
 
-This plugin depends on [unite.vim](https://github.com/Shougo/unite.vim) and `:Import`/`:Drop` Vim commands.  `:Import`/`:Drop` commands are bundled in Go environment.  See [documentation](http://golang.org/misc/vim/readme.txt).
+This plugin depends on [unite.vim](https://github.com/Shougo/unite.vim) and `:Import`/`:Drop` Vim commands.  `:Import`/`:Drop` commands are bundled in Go environment.  See [documentation](http://golang.org/misc/vim/readme.txt).  As optional, `:GoImport`, `:GoDrop` commands can be also referred which are defined in [vim-go](https://github.com/fatih/vim-go).
 
 If you use neobundle.vim, copy and paste below code in your `.vimrc`.
 
@@ -33,7 +35,7 @@ If you use neobundle.vim, copy and paste below code in your `.vimrc`.
 NeoBundleLazy 'rhysd/unite-go-import.vim', {
         \ 'autoload' : {
         \     'depends' : 'Shougo/unite.vim',
-        \     'unite_sources' : 'go/import',
+        \     'filetypes' : 'go',
         \   }
         \ }
 ```
@@ -42,7 +44,7 @@ NeoBundleLazy 'rhysd/unite-go-import.vim', {
 
 This plugin is distributed under the same license as Go programming language.
 
-    Copyright (c) 2014-2015 rhysd.
+    Copyright (c) 2014-2016 rhysd.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
