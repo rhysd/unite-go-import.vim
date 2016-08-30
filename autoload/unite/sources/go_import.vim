@@ -71,8 +71,10 @@ function! s:go_packages()
 
     let ret = []
     for dir in dirs
-        " This may expand to multiple lines
-        let roots = split(expand(dir . '/pkg/' . s:OS . '_' . s:ARCH), "\n")
+        " Note:
+        " Reject '_race' suffix because the directory is for binaries for
+        " race detector.
+        let roots = filter(split(expand(dir . '/pkg/' . s:OS . '_' . s:ARCH), "\n"), 'v:val !~# "_race$"')
         call add(roots, expand(dir . '/src'))
         for root in roots
             call extend(ret,
