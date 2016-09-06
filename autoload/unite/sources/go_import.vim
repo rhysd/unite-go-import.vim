@@ -41,6 +41,11 @@ else
 endif
 
 function! s:go_packages() abort
+    if executable('gopkgs')
+      " https://github.com/haya14busa/gopkgs
+      return split(system('gopkgs'), "\n")
+    endif
+
     let dirs = []
 
     if executable('go')
