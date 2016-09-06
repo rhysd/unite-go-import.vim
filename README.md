@@ -40,6 +40,12 @@ NeoBundleLazy 'rhysd/unite-go-import.vim', {
         \ }
 ```
 
+You can boost gathering all packages by installing [gopkgs](https://github.com/haya14busa/gopkgs).  If you have so many Go files under your `GOPATH` directory, I highly recommend to install gopkgs.
+
+```
+$ go get -u github.com/haya14busa/gopkgs/cmd/gopkgs
+```
+
 ## License
 
 This plugin is distributed under the same license as Go programming language.
