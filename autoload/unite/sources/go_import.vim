@@ -187,6 +187,42 @@ function! s:source.action_table.godoc.func(candidate) abort
     execute cmd a:candidate.word
 endfunction
 
+let s:source.action_table.godoc_browser = {
+            \ 'description' : 'Show documentation for the package with browser',
+            \ 'is_selectable' : 1,
+            \ }
+
+function! s:source.action_table.godoc_browser.func(candidates) abort
+    if exists(':OpenBrowser')
+        for c in a:candidates
+            execute 'OpenBrowser' 'https://godoc.org/' . c.word
+        endfor
+        return
+    endif
+
+    let cmdline = ''
+    if has('win32') || has('win64')
+        let cmdline = '!start "https://godoc.org/%s"'
+    elseif (has('mac') || has('macunix') || has('gui_macvim')) && executable('sw_vers')
+        let cmdline = 'open "https://godoc.org/%s"'
+    elseif executable('xdg-open')
+        let cmdline = 'xdg-open "https://godoc.org/%s"'
+    endif
+
+    if cmdline ==# ''
+        echohl ErrorMsg | echomsg 'No command was found to open a browser' | echohl None
+        return
+    endif
+
+    for c in a:candidates
+        let output = system(printf(cmdline, c.word))
+        if v:shell_error
+            echohl ErrorMsg | echomsg 'Error on opening a browser: ' . output | echohl None
+            return
+        endif
+    endfor
+endfunction
+
 let s:source.action_table.preview = {
             \ 'description' : 'Preview the package with godoc',
             \ 'is_quit' : 0,
