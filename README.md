@@ -17,13 +17,19 @@ unite-go-import.vim caches the first result on memory.  If you want to refresh t
 :Unite go/import:!
 ```
 
-You can see the `godoc` document as preview of the package.  Please enter `p` on the candidate of unite window.  If you want to show the preview automatically, execute `:Unite` command as below.
+You can see the GoDoc as preview of the package.  Please enter `p` on the candidate of unite window.  If you want to show the preview automatically, execute `:Unite` command as below.
 
 ```
 :Unite go/import -auto-preview
 ```
 
-There are `import`, `drop`, `godoc` and `import_as` actions for package candidates in unite interface.  `import` is a default action.
+There are `import`, `drop`, `godoc`, `godoc_browser` and `import_as` actions for package candidates in unite interface.  `import` is a default action.
+
+Additionally, if you want to search a package to see the GoDoc for the pacakge, specifying `godoc` as a default action may be helpful.  You can search a package incrementally and open its GoDoc.
+
+```
+:Unite go/import -default-action=godoc -start-insert
+```
 
 ## Installation
 
