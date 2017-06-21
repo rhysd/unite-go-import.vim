@@ -40,6 +40,14 @@ else
     let s:ARCH = '*'
 endif
 
+function! s:gopath() abort
+    let path = $GOPATH
+    if path ==# ''
+        let path = expand('~/go')
+    endif
+    return path
+endfunction
+
 function! s:go_packages() abort
     if executable('gopkgs')
       " https://github.com/haya14busa/gopkgs
@@ -67,7 +75,7 @@ function! s:go_packages() abort
     else
         let pathsep = ':'
     endif
-    let workspaces = split($GOPATH, pathsep)
+    let workspaces = split(s:gopath(), pathsep)
     let dirs += workspaces
 
     if dirs == []
